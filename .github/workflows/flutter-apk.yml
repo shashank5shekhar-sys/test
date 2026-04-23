@@ -1,8 +1,6 @@
 name: Build Flutter APK
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -10,29 +8,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-          cache: true
 
-      - name: Create missing Android project
+      - name: Create full Flutter project
         run: |
-          if [ ! -d "android" ]; then
-            flutter create .
-          fi
-
-      - name: Get dependencies
-        run: flutter pub get
+          flutter create temp_app
+          cp -r lib temp_app/
+          cp pubspec.yaml temp_app/
 
       - name: Build APK
-        run: flutter build apk --release
+        run: |
+          cd temp_app
+          flutter pub get
+          flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: quiz-app-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: temp_app/build/app/outputs/flutter-apk/app-release.apk
