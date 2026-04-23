@@ -21,24 +21,26 @@ dependencies:
   # Image Picker
   image_picker: ^1.0.7
 
-  # Shared Preferences (local storage)
+  # Local storage
   shared_preferences: ^2.2.3
 
-  # Loading / Overlay
-  flutter_spinkit: ^5.2.1
+  # Loading animation (FIXED - locked version)
+  flutter_spinkit: 5.2.1
 
-  # URL Launcher (optional)
+  # URL Launcher
   url_launcher: ^6.2.6
 
-  # Cached Network Image
+  # Cached images
   cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/images/
