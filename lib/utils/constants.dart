@@ -2,8 +2,8 @@
 
 class AppConstants {
   // Supabase credentials — replace with your actual values
-  static const String supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String supabaseUrl = 'https://supabase.com/dashboard/project/ahcswzvfxqzscohusihr';
+  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoY3N3enZmeHF6c2NvaHVzaWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDE4MzcsImV4cCI6MjA5MjUxNzgzN30.SHjdAcHNQ80069KxK5qU_h9EY-zgVJ9iV975P5GQ_3o';
 
   // Table names
   static const String profilesTable = 'profiles';
