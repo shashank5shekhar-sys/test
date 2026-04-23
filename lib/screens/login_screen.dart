@@ -1,7 +1,6 @@
 // lib/screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../supabase/auth_service.dart';
 import '../routes/app_routes.dart';
 import '../utils/theme.dart';
 import '../widgets/custom_button.dart';
@@ -16,7 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
-  final _passCtrl  = TextEditingController();
+  final _passCtrl = TextEditingController();
+
   bool _loading = false;
   bool _obscure = true;
 
@@ -27,23 +27,28 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // ✅ FAKE LOGIN (ANY EMAIL + PASSWORD WORKS)
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
+
     setState(() => _loading = true);
+
     try {
-      final user = await AuthService.login(
-        email: _emailCtrl.text.trim(),
-        password: _passCtrl.text,
-      );
+      // simulate loading
+      await Future.delayed(const Duration(seconds: 1));
+
       if (!mounted) return;
-      if (user != null) {
-        _showSuccessPopup('🎉 Login Successful!', 'Welcome back, ${user.name}!');
-        await Future.delayed(const Duration(seconds: 2));
-        if (!mounted) return;
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
-      } else {
-        _showError('Invalid credentials. Please try again.');
-      }
+
+      _showSuccessPopup(
+        '🎉 Login Successful!',
+        'Welcome back, ${_emailCtrl.text}!',
+      );
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      if (!mounted) return;
+
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -70,20 +75,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: AppTheme.success.withOpacity(0.15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check_rounded,
-                    color: AppTheme.success, size: 40),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: AppTheme.success,
+                  size: 40,
+                ),
               )
                   .animate()
                   .scale(curve: Curves.elasticOut, duration: 600.ms)
                   .fadeIn(),
               const SizedBox(height: 16),
-              Text(title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 8),
-              Text(message,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center),
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -94,11 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(children: [
-          const Icon(Icons.error_outline, color: AppTheme.error, size: 18),
-          const SizedBox(width: 8),
-          Expanded(child: Text(msg)),
-        ]),
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: AppTheme.error, size: 18),
+            const SizedBox(width: 8),
+            Expanded(child: Text(msg)),
+          ],
+        ),
         backgroundColor: AppTheme.surfaceAlt,
       ),
     );
@@ -117,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SizedBox(height: 32),
 
-                // Header
+                // HEADER
                 Center(
                   child: Container(
                     width: 72,
@@ -137,8 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    child: const Icon(Icons.quiz_rounded,
-                        size: 38, color: Colors.white),
+                    child: const Icon(
+                      Icons.quiz_rounded,
+                      size: 38,
+                      color: Colors.white,
+                    ),
                   ),
                 ).animate().fadeIn().scale(curve: Curves.elasticOut),
 
@@ -158,24 +175,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 40),
 
-                // Email
+                // EMAIL
                 _buildLabel('Email or Phone'),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _emailCtrl,
-                  keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Enter your email',
                     prefixIcon: Icon(Icons.person_outline_rounded,
                         color: AppTheme.textSecondary),
                   ),
                   validator: (v) =>
-                      v == null || v.isEmpty ? 'Please enter your email' : null,
+                      v == null || v.isEmpty ? 'Enter email' : null,
                 ).animate(delay: 300.ms).fadeIn().slideX(begin: -0.1),
 
                 const SizedBox(height: 16),
 
-                // Password
+                // PASSWORD
                 _buildLabel('Password'),
                 const SizedBox(height: 8),
                 TextFormField(
@@ -193,17 +209,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: AppTheme.textSecondary,
                         size: 20,
                       ),
-                      onPressed: () => setState(() => _obscure = !_obscure),
+                      onPressed: () =>
+                          setState(() => _obscure = !_obscure),
                     ),
                   ),
                   validator: (v) =>
-                      v == null || v.length < 6 ? 'Min 6 characters' : null,
+                      v == null || v.isEmpty ? 'Enter password' : null,
                 ).animate(delay: 400.ms).fadeIn().slideX(begin: -0.1),
 
                 const SizedBox(height: 32),
 
                 CustomButton(
-                  label: 'Sign In',
+                  label: 'Sign In (Test Mode)',
                   onTap: _login,
                   isLoading: _loading,
                   icon: Icons.login_rounded,
@@ -214,8 +231,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account? ",
-                        style: Theme.of(context).textTheme.bodyMedium),
+                    Text(
+                      "Don't have an account? ",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     GestureDetector(
                       onTap: () => Navigator.pushReplacementNamed(
                           context, AppRoutes.signup),
@@ -224,7 +243,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           color: AppTheme.accent,
                           fontWeight: FontWeight.w600,
-                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -245,7 +263,6 @@ class _LoginScreenState extends State<LoginScreen> {
         color: AppTheme.textSecondary,
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        letterSpacing: 0.5,
       ),
     );
   }
