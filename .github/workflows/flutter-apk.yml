@@ -15,17 +15,25 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
+          cache: true
 
-      - name: Create full Flutter project
+      - name: Create Flutter project
+        run: flutter create temp_app
+
+      - name: Copy project files
         run: |
-          flutter create temp_app
           cp -r lib temp_app/
+          cp -r assets temp_app/ || true
           cp pubspec.yaml temp_app/
+
+      - name: Fix dependencies (clean resolve)
+        run: |
+          cd temp_app
+          flutter pub get
 
       - name: Build APK
         run: |
           cd temp_app
-          flutter pub get
           flutter build apk --release
 
       - name: Upload APK
