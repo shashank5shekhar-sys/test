@@ -2,7 +2,7 @@
 
 class AppConstants {
   // Supabase credentials — replace with your actual values
-  static const String supabaseUrl = 'https://ahcswzvfxqzscohusihr.supabase.co/rest/v1/';
+  static const String supabaseUrl = 'https://ahcswzvfxqzscohusihr.storage.supabase.co/storage/v1/s3';
   static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoY3N3enZmeHF6c2NvaHVzaWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NDE4MzcsImV4cCI6MjA5MjUxNzgzN30.SHjdAcHNQ80069KxK5qU_h9EY-zgVJ9iV975P5GQ_3o';
 
   // Table names
