@@ -32,8 +32,13 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      # 🔥 Rename APK
+      - name: Rename APK
+        run: |
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/QuizMaster.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: quiz-app-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: QuizMaster-APK
+          path: build/app/outputs/flutter-apk/QuizMaster.apk
