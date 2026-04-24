@@ -1,43 +1,41 @@
-name: quiz_app
-description: A modern dark-mode quiz app for students with Supabase backend.
-publish_to: 'none'
-version: 1.0.0+1
+name: Build Flutter APK (Temp App)
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+on:
+  workflow_dispatch:
 
-dependencies:
-  flutter:
-    sdk: flutter
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-  # Supabase
-  supabase_flutter: ^2.3.4
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  # UI & Navigation
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.2.1
-  flutter_animate: ^4.5.0
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+          cache: true
 
-  # Image Picker
-  image_picker: ^1.0.7
+      - name: Create temp project
+        run: flutter create temp_app
 
-  # Local storage
-  shared_preferences: ^2.2.3
+      - name: Copy project files
+        run: |
+          rm -rf temp_app/lib
+          cp -r lib temp_app/
+          cp pubspec.yaml temp_app/
+          cp -r assets temp_app/ || true
+          cp -r supabase temp_app/ || true
 
-  # Loading animation
-  flutter_spinkit: ^5.2.1
+      - name: Fix working directory
+        run: cd temp_app && flutter pub get
 
-  # URL Launcher
-  url_launcher: ^6.2.6
+      - name: Build APK
+        run: cd temp_app && flutter build apk --release
 
-  # Cached images
-  cached_network_image: ^3.3.1
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  flutter_lints: ^3.0.0
-
-flutter:
-  uses-material-design: true
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: quiz-app-temp-apk
+          path: temp_app/build/app/outputs/flutter-apk/app-release.apk
