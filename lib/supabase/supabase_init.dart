@@ -12,7 +12,9 @@
 
 //   static SupabaseClient get client => Supabase.instance.client;
 // }
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+
+  import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/constants.dart';
 
 class SupabaseInit {
@@ -21,10 +23,9 @@ class SupabaseInit {
       url: AppConstants.supabaseUrl,
       anonKey: AppConstants.supabaseAnonKey,
 
-      // 🔥 THIS FIXES YOUR ERROR
+      // ✅ correct config
       authOptions: const FlutterAuthClientOptions(
         autoRefreshToken: false,
-        persistSession: false,
       ),
     );
   }
