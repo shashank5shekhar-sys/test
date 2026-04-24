@@ -27,7 +27,6 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
-   
   }
 
   @override
@@ -114,4 +113,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-lib/screens/splash_screen.dart
